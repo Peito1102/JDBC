@@ -1,25 +1,26 @@
 package org.vasquez.java.jdbc;
 
+import org.vasquez.java.jdbc.util.ConexionBD;
+
 import java.sql.*;
 
 public class EjemploJdbc {
     public static void main(String[] args) {
-        String url = "jdbc:mysql://localhost:3306/java_curso?serverTimezone=UTC";
-        String username = "root";
-        String password = "mysql";
-        try {
-            Connection conn = DriverManager.getConnection(url,username,password);
-            Statement stmt = conn.createStatement();
-            ResultSet resultado = stmt.executeQuery("SELECT * FROM productos");
 
+        try(Connection conn = ConexionBD.getInstance();
+            Statement stmt = conn.createStatement();
+            ResultSet resultado = stmt.executeQuery("SELECT * FROM productos")) {
+            System.out.println("id | nombre | precio | fecha");
             while (resultado.next()) {
-                System.out.println(resultado.getString(2));
+                System.out.print(resultado.getInt(1) + " ");
+                System.out.print(resultado.getString(2) + " ");
+                System.out.print(resultado.getInt(3) + " ");
+                System.out.println(resultado.getDate(4));
             }
-            resultado.close();
-            stmt.close();
-            conn.close();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
     }
 }
