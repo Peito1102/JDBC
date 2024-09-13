@@ -1,5 +1,8 @@
 package org.vasquez.java.jdbc;
 
+import org.vasquez.java.jdbc.modelo.Producto;
+import org.vasquez.java.jdbc.repositorio.ProductoRepositorioImpl;
+import org.vasquez.java.jdbc.repositorio.Repositorio;
 import org.vasquez.java.jdbc.util.ConexionBD;
 
 import java.sql.*;
@@ -7,16 +10,14 @@ import java.sql.*;
 public class EjemploJdbc {
     public static void main(String[] args) {
 
-        try(Connection conn = ConexionBD.getInstance();
-            Statement stmt = conn.createStatement();
-            ResultSet resultado = stmt.executeQuery("SELECT * FROM productos")) {
+        try(Connection conn = ConexionBD.getInstance()) {
+            Repositorio<Producto> repositorio = new ProductoRepositorioImpl();
             System.out.println("id | nombre | precio | fecha");
-            while (resultado.next()) {
-                System.out.print(resultado.getInt(1) + " ");
-                System.out.print(resultado.getString(2) + " ");
-                System.out.print(resultado.getInt(3) + " ");
-                System.out.println(resultado.getDate(4));
-            }
+            repositorio.listar().forEach(System.out::println);
+            System.out.println();
+
+            System.out.println(repositorio.porId(2L));
+
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
