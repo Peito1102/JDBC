@@ -23,7 +23,7 @@ public class EjemploJdbcDelete {
             System.out.println();
 
             System.out.println("=======EDITAR NUEVO PRODUCTO=======");
-            repositorio.elmimnar(3L);
+            repositorio.elmimnar(4L);
             System.out.println("Producto eliminado con éxito.");
             System.out.println("id | nombre | precio | fecha");
             repositorio.listar().forEach(System.out::println);
